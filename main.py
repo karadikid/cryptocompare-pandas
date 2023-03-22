@@ -49,7 +49,12 @@ else:
     # Print last five rows of DataFrame
     print(all_tickers.tail(10))
 
-
+# Define the ticker symbol and other details
+ticker_symbol = 'BTC'
+currency = 'USD'
+limit_value = 2000
+exchange_name = 'CCCAGG'
+data_before_timestamp = datetime(2021, 5, 1, 0, 0)
 
 # For daily data
 # cryptocompare.get_historical_price_day(ticker_symbol, currency, limit=limit_value, exchange=exchange_name, toTs=data_before_timestamp)
@@ -59,3 +64,27 @@ else:
 
 # For minute data
 # cryptocompare.get_historical_price_minute(ticker_symbol, currency, limit=limit_value, exchange=exchange_name, toTs=data_before_timestamp)
+
+# Fetch the raw price data
+raw_price_data = \
+    cryptocompare.get_historical_price_hour(
+        ticker_symbol,
+        currency,
+        limit=limit_value,
+        exchange=exchange_name,
+        toTs=data_before_timestamp
+    )
+
+# Convert the raw price data into a DataFrame
+hourly_price_data = pd.DataFrame.from_dict(raw_price_data)
+
+# Set the time columns as index and convert it to datetime
+hourly_price_data.set_index("time", inplace=True)
+hourly_price_data.index = pd.to_datetime(hourly_price_data.index, unit='s')
+hourly_price_data['datetimes'] = hourly_price_data.index
+hourly_price_data['datetimes'] = hourly_price_data['datetimes'].dt.strftime(
+    '%Y-%m-%d')
+
+# Preview the last 5 values of the the first 7 columns of the DataFrame
+hourly_price_data.iloc[:, :6].last()
+
