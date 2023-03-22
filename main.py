@@ -25,8 +25,6 @@ plt.style.use('seaborn-v0_8-darkgrid')
 # Get the API key from the Quantra file located inside the data_modules folder
 cryptocompare_API_key = os.getenv('API_KEY')
 
-print(cryptocompare_API_key)
-
 # Set the API key in the cryptocompare object
 # cryptocompare.cryptocompare._set_api_key_parameter(cryptocompare_API_key)
 cryptocompare.cryptocompare._set_api_key_parameter(os.getenv('API_KEY'))
@@ -36,7 +34,8 @@ print("API Key set!")
 if(os.path.exists('./all_tickers.csv')):
     all_tickers_csv = open('./all_tickers.csv', "r")
     all_tickers = pd.read_csv(all_tickers_csv)
-    print(all_tickers.tail(10))
+    print(all_tickers.head(6))
+    print(all_tickers.tail(5))
     # Preview the first 6 columns and the last 5 rows of the ticker list
     # print(all_tickers.iloc[:, :5].tail())
 
